@@ -1,35 +1,98 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
+import Link from 'next/link';
+import { Navbar } from '@/components/navbar';
+import { Footer } from '@/components/footer';
+import { Store, Brain, TrendingUp, ArrowRight } from 'lucide-react';
 
-export const metadata: Metadata = {
-  title: '扣子编程 - AI 开发伙伴',
-  description: '扣子编程，你的 AI 开发伙伴已就位',
-};
+const cards = [
+  {
+    href: '/retail',
+    icon: Store,
+    title: '零售信息化',
+    description: '门店系统与运营优化',
+    gradient: 'from-blue-500/20 to-cyan-500/20',
+    iconColor: 'text-blue-400',
+  },
+  {
+    href: '/ai',
+    icon: Brain,
+    title: 'AI 探索',
+    description: '技术在场景中的应用',
+    gradient: 'from-purple-500/20 to-pink-500/20',
+    iconColor: 'text-purple-400',
+  },
+  {
+    href: '/invest',
+    icon: TrendingUp,
+    title: '投资与经济',
+    description: '市场与长期价值判断',
+    gradient: 'from-amber-500/20 to-orange-500/20',
+    iconColor: 'text-amber-400',
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex h-full items-center justify-center bg-background text-foreground transition-colors duration-300 dark:bg-background dark:text-foreground overflow-hidden min-h-screen">
-      {/* 主容器 */}
-      <main className="flex w-full h-full max-w-3xl flex-col items-center justify-center px-16 py-32 sm:items-center">
-        <div className="flex flex-col items-center justify-between gap-4">
-           <Image
-            src="https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif"
-            alt="扣子编程 Logo"
-            width={156}
-            height={130}
-          />
-          <div>
-            <div className="flex flex-col items-center gap-2 text-center sm:items-center sm:text-center">
-              <h1 className="max-w-xl text-base font-semibold leading-tight tracking-tight text-foreground dark:text-foreground">
-                应用开发中
-              </h1>
-              <p className="max-w-2xl text-sm leading-8 text-muted-foreground dark:text-muted-foreground">
-                请稍后，页面即将呈现
-              </p>
-            </div>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+
+      {/* Hero */}
+      <main className="flex-1 flex flex-col justify-center pt-16">
+        <div className="max-w-6xl mx-auto px-6 w-full py-20 md:py-32">
+          <div className="max-w-3xl">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
+              <span className="bg-gradient-to-b from-white via-white/90 to-white/50 bg-clip-text text-transparent">
+                BaiYongQiang
+              </span>
+            </h1>
+            <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
+              零售行业数字化解决方案从业者
+              <br />
+              技术 &times; 商业 &times; 长期认知
+            </p>
+          </div>
+
+          {/* Cards */}
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-5">
+            {cards.map((card) => (
+              <Link key={card.href} href={card.href} className="group">
+                <div className="relative overflow-hidden rounded-xl border border-border bg-card p-8 transition-all duration-300 hover:border-primary/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5">
+                  {/* Gradient glow on hover */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  />
+
+                  <div className="relative z-10">
+                    <div
+                      className={`inline-flex items-center justify-center w-12 h-12 rounded-lg bg-secondary mb-5 ${card.iconColor}`}
+                    >
+                      <card.icon size={22} />
+                    </div>
+                    <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
+                      {card.title}
+                      <ArrowRight
+                        size={14}
+                        className="text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                      />
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {card.description}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Slogan */}
+          <div className="mt-20 text-center">
+            <p className="font-serif italic text-white/60 text-lg">
+              &ldquo;Reborn with AI, defined by lifelong learning.&rdquo;
+            </p>
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 }

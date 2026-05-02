@@ -5,8 +5,12 @@
 - **Framework**: Next.js 16 (App Router)
 - **Core**: React 19
 - **Language**: TypeScript 5
-- **UI 组件**: shadcn/ui (基于 Radix UI)
-- **Styling**: Tailwind CSS 4
+- **UI 组件**: shadcn/ui (基于 Radix UI) + Lucide Icons
+- **Styling**: Tailwind CSS 4 (暗色主题为默认)
+
+## 项目简介
+
+BaiYongQiang 个人网站 - 零售数字化专家。暗色主题风格，包含首页、零售信息化、AI 探索、投资之道、关于我等页面。
 
 ## 目录结构
 
@@ -19,7 +23,17 @@
 │   └── start.sh            # 生产环境启动脚本
 ├── src/
 │   ├── app/                # 页面路由与布局
-│   ├── components/ui/      # Shadcn UI 组件库
+│   │   ├── layout.tsx      # 根布局 (暗色主题, zh-CN)
+│   │   ├── page.tsx        # 首页 (英雄区 + 3 张卡片)
+│   │   ├── retail/         # 零售信息化页
+│   │   ├── ai/             # AI 探索页
+│   │   ├── invest/         # 投资之道页
+│   │   │   └── source/     # 投资子文章: 财富的源头与本质
+│   │   └── about/          # 关于我页 (含邮箱复制功能)
+│   ├── components/
+│   │   ├── navbar.tsx      # 导航栏 (响应式, 移动端汉堡菜单)
+│   │   ├── footer.tsx      # 页脚
+│   │   └── ui/             # Shadcn UI 组件库
 │   ├── hooks/              # 自定义 Hooks
 │   ├── lib/                # 工具库
 │   │   └── utils.ts        # 通用工具函数 (cn)
@@ -29,7 +43,24 @@
 └── tsconfig.json           # TypeScript 配置
 ```
 
-- 项目文件（如 app 目录、pages 目录、components 等）默认初始化到 `src/` 目录下。
+## 页面路由
+
+| 路径 | 说明 |
+|------|------|
+| `/` | 首页 - 英雄区 + 3 张主题卡片 |
+| `/retail` | 零售信息化 - 软硬件解决方案 |
+| `/ai` | AI 探索 - 硅基启蒙文章 |
+| `/invest` | 投资之道 - 投资哲学 |
+| `/invest/source` | 延伸阅读 - 财富的源头与本质 |
+| `/about` | 关于我 - 个人介绍与联系方式 |
+
+## 设计风格
+
+- 暗色主题 (`html.dark` class)，背景色深蓝黑
+- 渐变文字效果 (首页标题)
+- 卡片式内容布局，hover 渐变光效
+- Lucide 图标体系
+- 响应式设计 (移动端汉堡菜单)
 
 ## 包管理规范
 
