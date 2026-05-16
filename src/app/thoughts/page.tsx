@@ -2,17 +2,11 @@ import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { BookOpen, ArrowRight } from 'lucide-react';
-
-const articles = [
-  {
-    href: '/thoughts/arrogance-and-prejudice',
-    title: '傲慢与偏见：面对未知的智慧',
-    description: '关于人际交往中无端好恶的思考——当傲慢与偏见悄然登场，我们该如何面对未知？',
-    date: '2026-05',
-  },
-];
+import { getArticles } from '@/lib/articles';
 
 export default function ThoughtsPage() {
+  const articles = getArticles('thoughts');
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -36,8 +30,8 @@ export default function ThoughtsPage() {
           <div className="space-y-4">
             {articles.map((article) => (
               <Link
-                key={article.href}
-                href={article.href}
+                key={article.slug}
+                href={`/thoughts/${article.slug}`}
                 className="group block rounded-xl border border-border bg-card p-6 hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
               >
                 <div className="flex items-center justify-between">

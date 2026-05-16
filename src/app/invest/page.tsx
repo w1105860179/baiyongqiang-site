@@ -131,7 +131,7 @@ export default function InvestPage() {
           {/* Link to sub-article */}
           <div className="mt-16">
             <Link
-              href="/invest/source"
+              href="/invest/wealth-source"
               className="group block rounded-xl border border-border bg-card p-6 hover:border-amber-500/30 hover:bg-amber-500/5 transition-all duration-300"
             >
               <div className="flex items-center justify-between">
