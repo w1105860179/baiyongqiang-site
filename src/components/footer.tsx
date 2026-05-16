@@ -30,6 +30,12 @@ export function Footer() {
             投资
           </Link>
           <Link
+            href="/thoughts"
+            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            随笔
+          </Link>
+          <Link
             href="/about"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >

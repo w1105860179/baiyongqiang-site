@@ -10,6 +10,7 @@ const navItems = [
   { href: '/retail', label: '零售' },
   { href: '/ai', label: 'AI' },
   { href: '/invest', label: '投资' },
+  { href: '/thoughts', label: '随笔' },
   { href: '/about', label: '关于' },
 ];
 

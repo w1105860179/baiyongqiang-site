@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { Store, Brain, TrendingUp, ArrowRight } from 'lucide-react';
+import { Store, Brain, TrendingUp, BookOpen, ArrowRight } from 'lucide-react';
 
 const cards = [
   {
@@ -28,6 +28,14 @@ const cards = [
     gradient: 'from-amber-500/20 to-orange-500/20',
     iconColor: 'text-amber-400',
   },
+  {
+    href: '/thoughts',
+    icon: BookOpen,
+    title: '随笔',
+    description: '生活感悟与思考',
+    gradient: 'from-emerald-500/20 to-teal-500/20',
+    iconColor: 'text-emerald-400',
+  },
 ];
 
 export default function Home() {
@@ -52,7 +60,7 @@ export default function Home() {
           </div>
 
           {/* Cards */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {cards.map((card) => (
               <Link key={card.href} href={card.href} className="group">
                 <div className="relative overflow-hidden rounded-xl border border-border bg-card p-8 transition-all duration-300 hover:border-primary/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5">
