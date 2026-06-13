@@ -129,13 +129,13 @@ export default function Home() {
           <div>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-[0.2em]">
-                Writings
+                Recent
               </h2>
               <Link
-                href="/articles"
+                href="/knowledge"
                 className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
-                查看全部
+                Knowledge Map
                 <ArrowRight size={12} />
               </Link>
             </div>
