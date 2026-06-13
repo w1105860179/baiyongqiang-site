@@ -17,6 +17,24 @@ export interface Article extends ArticleMeta {
 }
 
 /**
+ * 格式化日期为"2026年"格式
+ */
+function formatDate(dateValue: unknown): string {
+  if (!dateValue) return '';
+  // 如果是 Date 对象，提取年份
+  if (dateValue instanceof Date) {
+    return `${dateValue.getFullYear()}年`;
+  }
+  // 如果是字符串，尝试提取年份
+  const str = String(dateValue);
+  const yearMatch = str.match(/\d{4}/);
+  if (yearMatch) {
+    return `${yearMatch[0]}年`;
+  }
+  return str;
+}
+
+/**
  * 获取指定目录下所有文章的元数据
  */
 export function getArticles(category: string): ArticleMeta[] {
@@ -33,7 +51,7 @@ export function getArticles(category: string): ArticleMeta[] {
       slug,
       title: data.title ?? slug,
       description: data.description ?? '',
-      date: String(data.date ?? ''),
+      date: formatDate(data.date),
       parent: data.parent,
     };
   });
@@ -61,7 +79,7 @@ export function getArticle(category: string, slug: string): Article | null {
     slug,
     title: data.title ?? slug,
     description: data.description ?? '',
-    date: String(data.date ?? ''),
+    date: formatDate(data.date),
     parent: data.parent,
     content,
   };
