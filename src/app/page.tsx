@@ -34,27 +34,6 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Currently — 极简文字列表 */}
-          <div className="mb-20">
-            <h2 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-[0.2em] mb-5">
-              § Currently
-            </h2>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-baseline gap-4">
-                <span className="text-[10px] text-muted-foreground/40 uppercase tracking-wider w-16">Reading</span>
-                <span className="text-foreground/70">投资、认知心理学、比特币</span>
-              </div>
-              <div className="flex items-baseline gap-4">
-                <span className="text-[10px] text-muted-foreground/40 uppercase tracking-wider w-16">Writing</span>
-                <span className="text-foreground/70">公众号「深海湖说」周更</span>
-              </div>
-              <div className="flex items-baseline gap-4">
-                <span className="text-[10px] text-muted-foreground/40 uppercase tracking-wider w-16">Building</span>
-                <span className="text-foreground/70">这个网站和投资小工具</span>
-              </div>
-            </div>
-          </div>
-
           {/* 文章流 */}
           <div>
             <h2 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-[0.2em] mb-8">

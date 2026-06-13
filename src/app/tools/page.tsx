@@ -1,6 +1,6 @@
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { Calculator, TrendingUp, BookOpen } from 'lucide-react';
+import { Calculator, TrendingUp } from 'lucide-react';
 
 const tools = [
   {
@@ -13,12 +13,6 @@ const tools = [
     icon: TrendingUp,
     title: '定投回测',
     description: '选择一个标的，回测定投的历史收益。',
-    status: '搭建中',
-  },
-  {
-    icon: BookOpen,
-    title: '阅读笔记',
-    description: '最近在读的书和笔记摘要。',
     status: '搭建中',
   },
 ];
@@ -36,7 +30,7 @@ export default function ToolsPage() {
             一些自己会用到的小工具，随手搭在这里。
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-xl">
             {tools.map((tool) => (
               <div
                 key={tool.title}
