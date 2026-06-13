@@ -5,20 +5,22 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 
 export default function CompoundCalculator() {
-  const [principal, setPrincipal] = useState(100000);
-  const [monthly, setMonthly] = useState(3000);
-  const [rate, setRate] = useState(8);
-  const [years, setYears] = useState(20);
+  const [principalStr, setPrincipalStr] = useState('100000');
+  const [monthlyStr, setMonthlyStr] = useState('3000');
+  const [rateStr, setRateStr] = useState('8');
+  const [yearsStr, setYearsStr] = useState('20');
+
+  const principal = Number(principalStr) || 0;
+  const monthly = Number(monthlyStr) || 0;
+  const rate = Number(rateStr) || 0;
+  const years = Number(yearsStr) || 1;
 
   const result = useMemo(() => {
     const monthlyRate = rate / 100 / 12;
     const months = years * 12;
     
-    // 一次性本金复利
     const fvLump = principal * Math.pow(1 + monthlyRate, months);
-    
-    // 每月定投复利
-    const fvMonthly = monthly > 0
+    const fvMonthly = monthly > 0 && monthlyRate > 0
       ? monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate)
       : 0;
     
@@ -77,9 +79,13 @@ export default function CompoundCalculator() {
                 初始本金（元）
               </label>
               <input
-                type="number"
-                value={principal}
-                onChange={(e) => setPrincipal(Number(e.target.value) || 0)}
+                type="text"
+                inputMode="numeric"
+                value={principalStr}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === '' || /^\d+$/.test(v)) setPrincipalStr(v);
+                }}
                 className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/50"
               />
             </div>
@@ -88,9 +94,13 @@ export default function CompoundCalculator() {
                 每月定投（元）
               </label>
               <input
-                type="number"
-                value={monthly}
-                onChange={(e) => setMonthly(Number(e.target.value) || 0)}
+                type="text"
+                inputMode="numeric"
+                value={monthlyStr}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === '' || /^\d+$/.test(v)) setMonthlyStr(v);
+                }}
                 className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/50"
               />
             </div>
@@ -99,10 +109,13 @@ export default function CompoundCalculator() {
                 年化收益率（%）
               </label>
               <input
-                type="number"
-                value={rate}
-                onChange={(e) => setRate(Number(e.target.value) || 0)}
-                step="0.1"
+                type="text"
+                inputMode="decimal"
+                value={rateStr}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === '' || /^\d*\.?\d*$/.test(v)) setRateStr(v);
+                }}
                 className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/50"
               />
             </div>
@@ -111,10 +124,13 @@ export default function CompoundCalculator() {
                 投资年限
               </label>
               <input
-                type="number"
-                value={years}
-                onChange={(e) => setYears(Number(e.target.value) || 1)}
-                max={60}
+                type="text"
+                inputMode="numeric"
+                value={yearsStr}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === '' || /^\d+$/.test(v)) setYearsStr(v);
+                }}
                 className="w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary/50"
               />
             </div>
