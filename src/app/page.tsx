@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { getAllArticles } from '@/lib/articles';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Brain, TrendingUp, BookOpen } from 'lucide-react';
 
 const categoryLabels: Record<string, string> = {
-  invest: '投资',
+  invest: 'Investing',
   ai: 'AI',
-  thoughts: '随笔',
+  thoughts: 'Learning',
 };
 
 export default function Home() {
@@ -27,17 +27,42 @@ export default function Home() {
               </span>
             </h1>
             <p className="mt-5 text-lg text-muted-foreground leading-relaxed">
-              投资思考 · 认知成长 · AI 实践
+              AI × Investing × Lifelong Learning
             </p>
-            <p className="mt-2 text-sm text-muted-foreground/60">
-              零售数字化从业者，持续学习者。在这里记录思考，沉淀认知。
+            <p className="mt-2 text-sm text-muted-foreground/40 font-serif italic">
+              Think long. Build slow. Stay curious.
             </p>
+          </div>
+
+          {/* 三段式定位 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-24">
+            <div className="rounded-xl border border-border/50 bg-card/20 p-6">
+              <Brain size={18} className="text-muted-foreground/50 mb-3" />
+              <h3 className="text-sm font-medium text-foreground mb-1.5">AI</h3>
+              <p className="text-xs text-muted-foreground/60 leading-relaxed">
+                Exploring how AI reshapes work, learning, and daily life.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border/50 bg-card/20 p-6">
+              <TrendingUp size={18} className="text-muted-foreground/50 mb-3" />
+              <h3 className="text-sm font-medium text-foreground mb-1.5">Investing</h3>
+              <p className="text-xs text-muted-foreground/60 leading-relaxed">
+                Long-term thinking on value, risk, and compound growth.
+              </p>
+            </div>
+            <div className="rounded-xl border border-border/50 bg-card/20 p-6">
+              <BookOpen size={18} className="text-muted-foreground/50 mb-3" />
+              <h3 className="text-sm font-medium text-foreground mb-1.5">Lifelong Learning</h3>
+              <p className="text-xs text-muted-foreground/60 leading-relaxed">
+                Notes on cognition, decision-making, and personal growth.
+              </p>
+            </div>
           </div>
 
           {/* 文章流 */}
           <div>
             <h2 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-[0.2em] mb-8">
-              § Writings
+              Writings
             </h2>
             <div className="space-y-0">
               {articles.map((article, index) => (
@@ -87,7 +112,7 @@ export default function Home() {
           {/* Slogan */}
           <div className="mt-24 text-center">
             <p className="font-serif italic text-white/40 text-base">
-              &ldquo;Reborn with AI, defined by lifelong learning.&rdquo;
+              &ldquo;Think long. Build slow. Stay curious.&rdquo;
             </p>
           </div>
         </div>

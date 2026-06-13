@@ -2,15 +2,21 @@ import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { getAllArticles } from '@/lib/articles';
+import { useState } from 'react';
 
 const categoryLabels: Record<string, string> = {
-  invest: '投资',
+  invest: 'Investing',
   ai: 'AI',
-  thoughts: '随笔',
+  thoughts: 'Learning',
 };
 
 export default function ArticlesPage() {
   const articles = getAllArticles();
+  const [filter, setFilter] = useState<string>('all');
+
+  const filtered = filter === 'all'
+    ? articles
+    : articles.filter((a) => a.category === filter);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -18,14 +24,41 @@ export default function ArticlesPage() {
       <main className="flex-1 pt-16">
         <div className="max-w-3xl mx-auto px-6 w-full py-20">
           <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">
-            全部文章
+            Writings
           </h1>
-          <p className="text-muted-foreground mb-16">
-            投资思考、认知成长、AI 实践。共 {articles.length} 篇。
+          <p className="text-muted-foreground mb-8">
+            AI × Investing × Lifelong Learning
           </p>
 
+          {/* 分类筛选 */}
+          <div className="flex gap-2 mb-12">
+            <button
+              onClick={() => setFilter('all')}
+              className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                filter === 'all'
+                  ? 'border-primary/30 bg-primary/5 text-foreground'
+                  : 'border-border/50 text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              All
+            </button>
+            {Object.entries(categoryLabels).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setFilter(key)}
+                className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                  filter === key
+                    ? 'border-primary/30 bg-primary/5 text-foreground'
+                    : 'border-border/50 text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
           <div className="space-y-0">
-            {articles.map((article, index) => (
+            {filtered.map((article, index) => (
               <Link
                 key={article.slug}
                 href={`/${article.category}/${article.slug}`}

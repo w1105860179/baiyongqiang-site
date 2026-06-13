@@ -4,22 +4,16 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'BaiYongQiang | 零售数字化专家',
+    default: 'BaiYongQiang | AI × Investing × Lifelong Learning',
     template: '%s | BaiYongQiang',
   },
   description:
-    '零售行业数字化解决方案从业者，关注技术、商业与长期价值。',
-  keywords: [
-    'BaiYongQiang',
-    '零售数字化',
-    'AI',
-    '投资',
-    '零售信息化',
-  ],
+    'Think long. Build slow. Stay curious. — AI × Investing × Lifelong Learning 的个人知识系统。',
+  keywords: ['BaiYongQiang', 'AI', '投资', 'Investing', 'Lifelong Learning', '个人知识系统'],
   authors: [{ name: 'BaiYongQiang' }],
   openGraph: {
-    title: 'BaiYongQiang | 零售数字化专家',
-    description: '零售行业数字化解决方案从业者，关注技术、商业与长期价值。',
+    title: 'BaiYongQiang | AI × Investing × Lifelong Learning',
+    description: 'Think long. Build slow. Stay curious. — AI × Investing × Lifelong Learning 的个人知识系统。',
     locale: 'zh_CN',
     type: 'website',
   },

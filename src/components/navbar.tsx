@@ -9,7 +9,6 @@ const navItems = [
   { href: '/', label: '首页' },
   { href: '/articles', label: '文章' },
   { href: '/tools', label: '工具' },
-  { href: '/retail', label: '零售' },
   { href: '/about', label: '关于' },
 ];
 
