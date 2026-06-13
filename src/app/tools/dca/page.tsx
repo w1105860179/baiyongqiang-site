@@ -33,6 +33,7 @@ export default function DcaBacktest() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [currency, setCurrency] = useState('¥');
+  const [currentPrice, setCurrentPrice] = useState<number | null>(null);
 
   const monthly = Number(monthlyStr) || 0;
 
@@ -54,6 +55,7 @@ export default function DcaBacktest() {
       } else {
         setPrices(json.data || []);
         setCurrency(json.currency === 'USD' ? '$' : '¥');
+        setCurrentPrice(json.currentPrice ?? null);
       }
     } catch {
       setError('网络请求失败');
@@ -67,7 +69,7 @@ export default function DcaBacktest() {
 
   const result = useMemo(() => {
     if (!prices.length || monthly <= 0) {
-      return { totalInvested: 0, finalValue: 0, totalReturn: 0, roi: 0, avgCost: 0, finalPrice: 0, totalShares: 0, monthlyData: [] as any[] };
+      return { totalInvested: 0, finalValue: 0, totalReturn: 0, roi: 0, cagr: 0, avgCost: 0, finalPrice: 0, totalShares: 0, monthlyData: [] as any[] };
     }
 
     let totalShares = 0;
@@ -93,9 +95,11 @@ export default function DcaBacktest() {
     const finalValue = Math.round(totalShares * finalPrice);
     const totalReturn = finalValue - totalInvested;
     const roi = totalInvested > 0 ? Math.round((totalReturn / totalInvested) * 1000) / 10 : 0;
+    const years = prices.length / 12;
+    const cagr = totalInvested > 0 && years > 0 ? Math.round(((Math.pow(finalValue / totalInvested, 1 / years) - 1) * 100) * 10) / 10 : 0;
     const avgCost = totalShares > 0 ? Math.round(totalInvested / totalShares * 100) / 100 : 0;
 
-    return { totalInvested, finalValue, totalReturn, roi, avgCost, finalPrice, totalShares: Math.round(totalShares * 10000) / 10000, monthlyData };
+    return { totalInvested, finalValue, totalReturn, roi, cagr, avgCost, finalPrice, totalShares: Math.round(totalShares * 10000) / 10000, monthlyData };
   }, [prices, monthly]);
 
   const formatWan = (v: number) => {
@@ -169,21 +173,33 @@ export default function DcaBacktest() {
                   <div className="text-xl font-bold text-foreground">{currency}{formatWan(result.finalValue)}</div>
                 </div>
                 <div className="rounded-xl border border-border bg-card/50 p-4">
-                  <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">总收益 / 收益率</div>
-                  <div className={`text-xl font-bold ${result.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {currency}{formatWan(result.totalReturn)} <span className="text-xs">({result.roi}%)</span>
+                  <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">年化收益率</div>
+                  <div className={`text-xl font-bold ${result.cagr >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {result.cagr}%
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-12">
-                <div className="rounded-lg border border-border/50 p-4">
-                  <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">平均成本</div>
-                  <div className="text-sm text-foreground/80">{currency}{result.avgCost}</div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <div className="rounded-xl border border-border bg-card/50 p-4">
+                  <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">总收益</div>
+                  <div className={`text-lg font-bold ${result.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {currency}{formatWan(result.totalReturn)} <span className="text-xs">({result.roi}%)</span>
+                  </div>
                 </div>
-                <div className="rounded-lg border border-border/50 p-4">
+                <div className="rounded-xl border border-border bg-card/50 p-4">
+                  <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">平均成本</div>
+                  <div className="text-lg font-bold text-foreground">{currency}{result.avgCost}</div>
+                </div>
+                <div className="rounded-xl border border-border bg-card/50 p-4">
+                  <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">期末价格</div>
+                  <div className="text-lg font-bold text-foreground">{currency}{result.finalPrice}</div>
+                </div>
+                <div className="rounded-xl border border-border bg-card/50 p-4">
                   <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">当前价格</div>
-                  <div className="text-sm text-foreground/80">{currency}{result.finalPrice}</div>
+                  <div className="text-lg font-bold text-foreground">
+                    {currentPrice !== null ? `${currency}${currentPrice}` : '加载中...'}
+                  </div>
                 </div>
               </div>
 
