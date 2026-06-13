@@ -6,10 +6,10 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navItems = [
-  { href: '/', label: '首页' },
-  { href: '/articles', label: '文章' },
-  { href: '/tools', label: '工具' },
-  { href: '/about', label: '关于' },
+  { href: '/', label: 'Home' },
+  { href: '/articles', label: 'Writings' },
+  { href: '/tools', label: 'Tools' },
+  { href: '/about', label: 'About' },
 ];
 
 export function Navbar() {

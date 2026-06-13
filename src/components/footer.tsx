@@ -5,41 +5,29 @@ export function Footer() {
     <footer className="border-t border-border">
       <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-xs text-muted-foreground tracking-widest uppercase">
-          &copy; 2026 BaiYongQiang &middot; Digital Garden
+          &copy; 2026 BaiYongQiang
         </p>
         <p className="text-sm italic text-muted-foreground font-serif">
-          &ldquo;Reborn with AI, defined by lifelong learning.&rdquo;
+          &ldquo;Think long. Build slow. Stay curious.&rdquo;
         </p>
         <div className="flex items-center gap-6">
           <Link
-            href="/retail"
+            href="/articles"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            零售
+            Writings
           </Link>
           <Link
-            href="/ai"
+            href="/tools"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            AI
-          </Link>
-          <Link
-            href="/invest"
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            投资
-          </Link>
-          <Link
-            href="/thoughts"
-            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-          >
-            随笔
+            Tools
           </Link>
           <Link
             href="/about"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            关于
+            About
           </Link>
         </div>
       </div>
