@@ -34,35 +34,23 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Currently — 李笑来风格状态栏 */}
+          {/* Currently — 极简文字列表 */}
           <div className="mb-20">
-            <h2 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-[0.2em] mb-4">
+            <h2 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-[0.2em] mb-5">
               § Currently
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="rounded-lg border border-border bg-card/50 p-5">
-                <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wider mb-1.5">
-                  Reading
-                </div>
-                <div className="text-sm text-foreground/80">
-                  投资、认知心理学、比特币
-                </div>
+            <div className="space-y-3 text-sm">
+              <div className="flex items-baseline gap-4">
+                <span className="text-[10px] text-muted-foreground/40 uppercase tracking-wider w-16">Reading</span>
+                <span className="text-foreground/70">投资、认知心理学、比特币</span>
               </div>
-              <div className="rounded-lg border border-border bg-card/50 p-5">
-                <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wider mb-1.5">
-                  Writing
-                </div>
-                <div className="text-sm text-foreground/80">
-                  公众号「深海湖说」周更
-                </div>
+              <div className="flex items-baseline gap-4">
+                <span className="text-[10px] text-muted-foreground/40 uppercase tracking-wider w-16">Writing</span>
+                <span className="text-foreground/70">公众号「深海湖说」周更</span>
               </div>
-              <div className="rounded-lg border border-border bg-card/50 p-5">
-                <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wider mb-1.5">
-                  Building
-                </div>
-                <div className="text-sm text-foreground/80">
-                  这个网站和投资小工具
-                </div>
+              <div className="flex items-baseline gap-4">
+                <span className="text-[10px] text-muted-foreground/40 uppercase tracking-wider w-16">Building</span>
+                <span className="text-foreground/70">这个网站和投资小工具</span>
               </div>
             </div>
           </div>
