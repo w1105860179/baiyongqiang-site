@@ -12,7 +12,6 @@ const categoryLabels: Record<string, string> = {
 
 export default function Home() {
   const articles = getAllArticles();
-  // 精选文章：每个分类取最新一篇
   const featuredByCategory = ['invest', 'ai', 'thoughts'].map((cat) => {
     const catArticles = articles.filter((a) => a.category === cat);
     return catArticles[0];
@@ -41,7 +40,7 @@ export default function Home() {
           </div>
 
           {/* 三大板块入口 */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-20">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
             <div className="rounded-xl border border-border/50 bg-card/20 p-5 hover:bg-card/30 transition-colors">
               <Brain size={20} className="text-muted-foreground/50 mb-3" />
               <h3 className="text-sm font-medium text-foreground mb-1.5">AI</h3>
@@ -63,6 +62,12 @@ export default function Home() {
                 Notes on cognition, decision-making, and personal growth.
               </p>
             </div>
+          </div>
+
+          <div className="text-center mb-16">
+            <Link href="/knowledge" className="inline-flex items-center gap-2 text-xs text-muted-foreground/40 hover:text-muted-foreground transition-colors">
+              查看知识地图 <ArrowRight size={12} />
+            </Link>
           </div>
 
           {/* 精选文章 */}
