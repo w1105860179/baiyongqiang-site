@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const SYMBOL_MAP: Record<string, string> = {
-  'hs300': '000300.SS',
+  'hs300': 'ASHR',
   'sp500': 'SPY',
   'nasdaq100': 'QQQ',
   'gold': 'GLD',
