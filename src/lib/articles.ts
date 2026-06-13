@@ -9,6 +9,7 @@ export interface ArticleMeta {
   title: string;
   description: string;
   date: string;
+  category: string;
   parent?: string;
 }
 
@@ -52,6 +53,7 @@ export function getArticles(category: string): ArticleMeta[] {
       title: data.title ?? slug,
       description: data.description ?? '',
       date: formatDate(data.date),
+      category,
       parent: data.parent,
     };
   });
@@ -80,9 +82,30 @@ export function getArticle(category: string, slug: string): Article | null {
     title: data.title ?? slug,
     description: data.description ?? '',
     date: formatDate(data.date),
+    category,
     parent: data.parent,
     content,
   };
+}
+
+/**
+ * 获取所有分类下的所有文章（按日期倒序）
+ */
+export function getAllArticles(): ArticleMeta[] {
+  const categories = fs.existsSync(contentDir)
+    ? fs.readdirSync(contentDir).filter((f) => {
+        const fp = path.join(contentDir, f);
+        return fs.statSync(fp).isDirectory();
+      })
+    : [];
+
+  const all: ArticleMeta[] = [];
+  for (const category of categories) {
+    all.push(...getArticles(category));
+  }
+
+  all.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+  return all;
 }
 
 /**

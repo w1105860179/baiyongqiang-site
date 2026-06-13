@@ -7,10 +7,9 @@ import { Menu, X } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: '首页' },
+  { href: '/articles', label: '文章' },
+  { href: '/tools', label: '工具' },
   { href: '/retail', label: '零售' },
-  { href: '/ai', label: 'AI' },
-  { href: '/invest', label: '投资' },
-  { href: '/thoughts', label: '随笔' },
   { href: '/about', label: '关于' },
 ];
 
@@ -20,7 +19,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border">
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link
           href="/"
           className="text-lg font-bold tracking-tight text-foreground hover:text-primary transition-colors"

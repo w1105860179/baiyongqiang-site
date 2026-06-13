@@ -1,99 +1,125 @@
 import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { Store, Brain, TrendingUp, BookOpen, ArrowRight } from 'lucide-react';
+import { getAllArticles } from '@/lib/articles';
+import { ArrowRight } from 'lucide-react';
 
-const cards = [
-  {
-    href: '/retail',
-    icon: Store,
-    title: '零售信息化',
-    description: '门店系统与运营优化',
-    gradient: 'from-blue-500/20 to-cyan-500/20',
-    iconColor: 'text-blue-400',
-  },
-  {
-    href: '/ai',
-    icon: Brain,
-    title: 'AI 探索',
-    description: '技术在场景中的应用',
-    gradient: 'from-purple-500/20 to-pink-500/20',
-    iconColor: 'text-purple-400',
-  },
-  {
-    href: '/invest',
-    icon: TrendingUp,
-    title: '投资与经济',
-    description: '市场与长期价值判断',
-    gradient: 'from-amber-500/20 to-orange-500/20',
-    iconColor: 'text-amber-400',
-  },
-  {
-    href: '/thoughts',
-    icon: BookOpen,
-    title: '随笔',
-    description: '生活感悟与思考',
-    gradient: 'from-emerald-500/20 to-teal-500/20',
-    iconColor: 'text-emerald-400',
-  },
-];
+const categoryLabels: Record<string, string> = {
+  invest: '投资',
+  ai: 'AI',
+  thoughts: '随笔',
+};
 
 export default function Home() {
+  const articles = getAllArticles();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      {/* Hero */}
-      <main className="flex-1 flex flex-col justify-center pt-16">
-        <div className="max-w-6xl mx-auto px-6 w-full py-20 md:py-32">
-          <div className="max-w-3xl">
+      <main className="flex-1 pt-16">
+        <div className="max-w-3xl mx-auto px-6 w-full py-20 md:py-28">
+          {/* Hero */}
+          <div className="mb-20">
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
               <span className="bg-gradient-to-b from-white via-white/90 to-white/50 bg-clip-text text-transparent">
                 BaiYongQiang
               </span>
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
-              零售行业数字化解决方案从业者
-              <br />
-              技术 &times; 商业 &times; 长期认知
+            <p className="mt-5 text-lg text-muted-foreground leading-relaxed">
+              投资思考 · 认知成长 · AI 实践
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground/60">
+              零售数字化从业者，持续学习者。在这里记录思考，沉淀认知。
             </p>
           </div>
 
-          {/* Cards */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {cards.map((card) => (
-              <Link key={card.href} href={card.href} className="group">
-                <div className="relative overflow-hidden rounded-xl border border-border bg-card p-8 transition-all duration-300 hover:border-primary/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5">
-                  {/* Gradient glow on hover */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                  />
-
-                  <div className="relative z-10">
-                    <div
-                      className={`inline-flex items-center justify-center w-12 h-12 rounded-lg bg-secondary mb-5 ${card.iconColor}`}
-                    >
-                      <card.icon size={22} />
-                    </div>
-                    <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center gap-2">
-                      {card.title}
-                      <ArrowRight
-                        size={14}
-                        className="text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-                      />
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {card.description}
-                    </p>
-                  </div>
+          {/* Currently — 李笑来风格状态栏 */}
+          <div className="mb-20">
+            <h2 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-[0.2em] mb-4">
+              § Currently
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="rounded-lg border border-border bg-card/50 p-5">
+                <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wider mb-1.5">
+                  Reading
                 </div>
+                <div className="text-sm text-foreground/80">
+                  投资、认知心理学、比特币
+                </div>
+              </div>
+              <div className="rounded-lg border border-border bg-card/50 p-5">
+                <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wider mb-1.5">
+                  Writing
+                </div>
+                <div className="text-sm text-foreground/80">
+                  公众号「深海湖说」周更
+                </div>
+              </div>
+              <div className="rounded-lg border border-border bg-card/50 p-5">
+                <div className="text-[10px] font-medium text-muted-foreground/50 uppercase tracking-wider mb-1.5">
+                  Building
+                </div>
+                <div className="text-sm text-foreground/80">
+                  这个网站和投资小工具
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 文章流 */}
+          <div>
+            <h2 className="text-xs font-medium text-muted-foreground/50 uppercase tracking-[0.2em] mb-8">
+              § Writings
+            </h2>
+            <div className="space-y-0">
+              {articles.map((article, index) => (
+                <Link
+                  key={article.slug}
+                  href={`/${article.category}/${article.slug}`}
+                  className="group block py-6 border-b border-border/50 last:border-b-0 transition-colors hover:border-border"
+                >
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="text-[11px] text-muted-foreground/40 tabular-nums">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    {article.category && categoryLabels[article.category] && (
+                      <span className="text-[10px] px-2 py-0.5 rounded-full border border-border/50 text-muted-foreground/60">
+                        {categoryLabels[article.category]}
+                      </span>
+                    )}
+                    {article.date && (
+                      <span className="text-xs text-muted-foreground/40">
+                        {article.date}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-base font-medium text-foreground group-hover:text-foreground/80 transition-colors leading-snug">
+                    {article.title}
+                  </h3>
+                  {article.description && (
+                    <p className="mt-1.5 text-sm text-muted-foreground/60 line-clamp-2 leading-relaxed">
+                      {article.description}
+                    </p>
+                  )}
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-10 text-center">
+              <Link
+                href="/articles"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                浏览全部文章
+                <ArrowRight size={14} />
               </Link>
-            ))}
+            </div>
           </div>
 
           {/* Slogan */}
-          <div className="mt-20 text-center">
-            <p className="font-serif italic text-white/60 text-lg">
+          <div className="mt-24 text-center">
+            <p className="font-serif italic text-white/40 text-base">
               &ldquo;Reborn with AI, defined by lifelong learning.&rdquo;
             </p>
           </div>
