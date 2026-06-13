@@ -32,6 +32,7 @@ export default function DcaBacktest() {
   const [prices, setPrices] = useState<PricePoint[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [currency, setCurrency] = useState('¥');
 
   const monthly = Number(monthlyStr) || 0;
 
@@ -52,6 +53,7 @@ export default function DcaBacktest() {
         setPrices([]);
       } else {
         setPrices(json.data || []);
+        setCurrency(json.currency === 'USD' ? '$' : '¥');
       }
     } catch {
       setError('网络请求失败');
@@ -160,16 +162,16 @@ export default function DcaBacktest() {
                 </div>
                 <div className="rounded-xl border border-border bg-card/50 p-4">
                   <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">总投入</div>
-                  <div className="text-xl font-bold text-foreground">¥{formatWan(result.totalInvested)}</div>
+                  <div className="text-xl font-bold text-foreground">{currency}{formatWan(result.totalInvested)}</div>
                 </div>
                 <div className="rounded-xl border border-border bg-card/50 p-4">
                   <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">最终市值</div>
-                  <div className="text-xl font-bold text-foreground">¥{formatWan(result.finalValue)}</div>
+                  <div className="text-xl font-bold text-foreground">{currency}{formatWan(result.finalValue)}</div>
                 </div>
                 <div className="rounded-xl border border-border bg-card/50 p-4">
                   <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">总收益 / 收益率</div>
                   <div className={`text-xl font-bold ${result.totalReturn >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    ¥{formatWan(result.totalReturn)} <span className="text-xs">({result.roi}%)</span>
+                    {currency}{formatWan(result.totalReturn)} <span className="text-xs">({result.roi}%)</span>
                   </div>
                 </div>
               </div>
@@ -177,11 +179,11 @@ export default function DcaBacktest() {
               <div className="grid grid-cols-2 gap-4 mb-12">
                 <div className="rounded-lg border border-border/50 p-4">
                   <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">平均成本</div>
-                  <div className="text-sm text-foreground/80">¥{result.avgCost}</div>
+                  <div className="text-sm text-foreground/80">{currency}{result.avgCost}</div>
                 </div>
                 <div className="rounded-lg border border-border/50 p-4">
                   <div className="text-[10px] text-muted-foreground/50 uppercase tracking-wider mb-1">当前价格</div>
-                  <div className="text-sm text-foreground/80">¥{result.finalPrice}</div>
+                  <div className="text-sm text-foreground/80">{currency}{result.finalPrice}</div>
                 </div>
               </div>
 
@@ -192,7 +194,7 @@ export default function DcaBacktest() {
                     const maxVal = Math.max(...result.monthlyData.map((x) => x.value), 1);
                     const h = (d.value / maxVal) * 100;
                     return (
-                      <div key={i} className="flex-1 flex flex-col justify-end items-center" title={`${d.date}: ¥${formatWan(d.value)}`}>
+                      <div key={i} className="flex-1 flex flex-col justify-end items-center" title={`${d.date}: ${currency}${formatWan(d.value)}`}>
                         <div className="w-full rounded-t-sm" style={{ height: `${Math.max(h, 0.5)}%`, minHeight: '1px', background: 'linear-gradient(to top, rgba(59,130,246,0.3), rgba(59,130,246,0.1))' }} />
                       </div>
                     );
@@ -218,9 +220,9 @@ export default function DcaBacktest() {
                     {result.monthlyData.slice(0, 8).map((d) => (
                       <tr key={d.month} className="border-b border-border/50 hover:bg-card/20 transition-colors">
                         <td className="px-4 py-2 text-foreground/70">{d.date}</td>
-                        <td className="text-right px-4 py-2 text-muted-foreground/60">¥{d.price}</td>
+                        <td className="text-right px-4 py-2 text-muted-foreground/60">{currency}{d.price}</td>
                         <td className="text-right px-4 py-2 text-foreground/50">{d.shares}</td>
-                        <td className="text-right px-4 py-2 text-foreground/80">¥{formatWan(d.value)}</td>
+                        <td className="text-right px-4 py-2 text-foreground/80">{currency}{formatWan(d.value)}</td>
                       </tr>
                     ))}
                     {result.monthlyData.length > 8 && (
@@ -231,7 +233,7 @@ export default function DcaBacktest() {
                           return (
                             <tr className="hover:bg-card/20 transition-colors">
                               <td className="px-4 py-2 text-foreground/70">{last.date}</td>
-                              <td className="text-right px-4 py-2 text-muted-foreground/60">¥{last.price}</td>
+                              <td className="text-right px-4 py-2 text-muted-foreground/60">{currency}{last.price}</td>
                               <td className="text-right px-4 py-2 text-foreground/50">{last.shares}</td>
                               <td className="text-right px-4 py-2 text-foreground/80 font-medium">¥{formatWan(last.value)}</td>
                             </tr>
