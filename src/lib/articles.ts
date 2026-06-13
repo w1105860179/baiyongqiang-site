@@ -33,13 +33,17 @@ export function getArticles(category: string): ArticleMeta[] {
       slug,
       title: data.title ?? slug,
       description: data.description ?? '',
-      date: data.date ?? '',
+      date: String(data.date ?? ''),
       parent: data.parent,
     };
   });
 
   // 按日期倒序
-  articles.sort((a, b) => b.date.localeCompare(a.date));
+  articles.sort((a, b) => {
+    const dateA = String(a.date || '');
+    const dateB = String(b.date || '');
+    return dateB.localeCompare(dateA);
+  });
   return articles;
 }
 
@@ -57,7 +61,7 @@ export function getArticle(category: string, slug: string): Article | null {
     slug,
     title: data.title ?? slug,
     description: data.description ?? '',
-    date: data.date ?? '',
+    date: String(data.date ?? ''),
     parent: data.parent,
     content,
   };
