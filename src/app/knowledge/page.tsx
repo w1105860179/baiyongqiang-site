@@ -15,6 +15,7 @@ const areas = {
     bgColor: 'bg-purple-500/5',
     description: '探索 AI 如何改变工作、学习和生活。',
     topics: [
+      { label: '什么是AI？', href: '/ai/what-is-ai' },
       { label: '硅基启蒙：AI 时代的全球重构', href: '/ai/silicon-enlightenment' },
       { label: '也算亲手用了AI', href: '/ai/my-first-ai-website' },
     ],
@@ -196,6 +197,7 @@ export default function KnowledgeMap() {
                   color: 'text-purple-400',
                   title: '想了解 AI 与实践',
                   articles: [
+                    { label: '什么是AI？', href: '/ai/what-is-ai' },
                     { label: '也算亲手用了AI', href: '/ai/my-first-ai-website' },
                     { label: '硅基启蒙：AI 时代的全球重构', href: '/ai/silicon-enlightenment' },
                   ],
