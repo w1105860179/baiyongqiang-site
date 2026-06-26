@@ -16,6 +16,8 @@ const areas = {
     description: '探索 AI 如何改变工作、学习和生活。',
     topics: [
       { label: '什么是AI？', href: '/ai/what-is-ai' },
+      { label: 'AI 变革全景：从 Agent 到行业重塑的六维透视', href: '/ai/ai-transformation-panorama' },
+      { label: 'AI 落地实战手册：从认知到行动的六步指南', href: '/ai/ai-practical-guide' },
       { label: '硅基启蒙：AI 时代的全球重构', href: '/ai/silicon-enlightenment' },
       { label: '也算亲手用了AI', href: '/ai/my-first-ai-website' },
     ],
@@ -43,6 +45,7 @@ const areas = {
     bgColor: 'bg-emerald-500/5',
     description: '认知、决策与个人成长的笔记与思考。',
     topics: [
+      { label: '情绪稳定的本质，就四个字', href: '/thoughts/emotional-stability' },
       { label: '怎么能成长的最快？', href: '/thoughts/multi-dimensional-growth' },
       { label: '复杂并不等于高级', href: '/thoughts/complexity-vs-simplicity' },
       { label: '丢人就像丢钱一样', href: '/thoughts/fear-of-embarrassment' },
@@ -184,11 +187,11 @@ export default function KnowledgeMap() {
                   color: 'text-emerald-400',
                   title: '想提升个人认知',
                   articles: [
+                    { label: '情绪稳定的本质，就四个字', href: '/thoughts/emotional-stability' },
                     { label: '开启微行动，成就大改变', href: '/thoughts/my-new-article' },
                     { label: '怎么能成长的最快？', href: '/thoughts/multi-dimensional-growth' },
                     { label: '丢人就像丢钱一样', href: '/thoughts/fear-of-embarrassment' },
                     { label: '复杂并不等于高级', href: '/thoughts/complexity-vs-simplicity' },
-                    { label: '傲慢与偏见：面对未知的智慧', href: '/thoughts/arrogance-and-prejudice' },
                   ],
                   link: '/thoughts',
                 },
@@ -198,6 +201,8 @@ export default function KnowledgeMap() {
                   title: '想了解 AI 与实践',
                   articles: [
                     { label: '什么是AI？', href: '/ai/what-is-ai' },
+                    { label: 'AI 变革全景：从 Agent 到行业重塑的六维透视', href: '/ai/ai-transformation-panorama' },
+                    { label: 'AI 落地实战手册：从认知到行动的六步指南', href: '/ai/ai-practical-guide' },
                     { label: '也算亲手用了AI', href: '/ai/my-first-ai-website' },
                     { label: '硅基启蒙：AI 时代的全球重构', href: '/ai/silicon-enlightenment' },
                   ],
