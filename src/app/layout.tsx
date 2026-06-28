@@ -4,16 +4,16 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'BaiYongQiang | AI × Investing × Lifelong Learning',
+    default: 'BaiYongQiang | AI × 投资 × 终身学习',
     template: '%s | BaiYongQiang',
   },
   description:
-    'Think long. Build slow. Stay curious. — AI × Investing × Lifelong Learning 的个人知识系统。',
-  keywords: ['BaiYongQiang', 'AI', '投资', 'Investing', 'Lifelong Learning', '个人知识系统'],
+    'Think long. Build slow. Stay curious. — AI × 投资 × 终身学习的个人知识系统。',
+  keywords: ['BaiYongQiang', 'AI', '投资', '终身学习', '个人知识系统'],
   authors: [{ name: 'BaiYongQiang' }],
   openGraph: {
-    title: 'BaiYongQiang | AI × Investing × Lifelong Learning',
-    description: 'Think long. Build slow. Stay curious. — AI × Investing × Lifelong Learning 的个人知识系统。',
+    title: 'BaiYongQiang | AI × 投资 × 终身学习',
+    description: 'Think long. Build slow. Stay curious. — AI × 投资 × 终身学习的个人知识系统。',
     locale: 'zh_CN',
     type: 'website',
   },
