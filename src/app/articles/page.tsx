@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { getAllArticles } from '@/lib/articles';
+import { ArrowRight, Clock } from 'lucide-react';
 
 const categoryLabels: Record<string, string> = {
   invest: '投资',
@@ -88,6 +89,12 @@ function ArticlesContent({ filter }: { filter: string }) {
               {article.date && (
                 <span className="text-xs text-muted-foreground/40">
                   {article.date}
+                </span>
+              )}
+              {article.readingTime && (
+                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground/40">
+                  <Clock size={12} />
+                  {article.readingTime}
                 </span>
               )}
             </div>
