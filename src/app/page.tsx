@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { getAllArticles } from '@/lib/articles';
-import { ArrowRight, Brain, TrendingUp, BookOpen, Wrench } from 'lucide-react';
+import { ArrowRight, Brain, TrendingUp, BookOpen, Wrench, Clock } from 'lucide-react';
 
 const categoryLabels: Record<string, string> = {
   invest: '投资',
@@ -103,6 +103,12 @@ export default function Home() {
                     )}
                     {article.date && (
                       <span className="text-xs text-muted-foreground/40">{article.date}</span>
+                    )}
+                    {article.readingTime && (
+                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground/40">
+                        <Clock size={12} />
+                        {article.readingTime}
+                      </span>
                     )}
                   </div>
                   <h3 className="text-base font-medium text-foreground group-hover:text-foreground/80 transition-colors mb-2 leading-snug">
