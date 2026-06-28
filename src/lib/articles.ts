@@ -11,10 +11,27 @@ export interface ArticleMeta {
   date: string;
   category: string;
   parent?: string;
+  readingTime: string;
 }
 
 export interface Article extends ArticleMeta {
   content: string;
+}
+
+/**
+ * 计算阅读时长
+ */
+function calculateReadingTime(text: string): string {
+  const clean = text
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[.*?\]\(.*?\)/g, '$1')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`]+`/g, '');
+
+  const cjk = (clean.match(/[\u4e00-\u9fa5]/g) || []).length;
+  const words = (clean.match(/[a-zA-Z]+/g) || []).length;
+  const minutes = Math.ceil(cjk / 300 + words / 200);
+  return `${Math.max(minutes, 1)} 分钟`;
 }
 
 /**
@@ -47,7 +64,7 @@ export function getArticles(category: string): ArticleMeta[] {
   const articles = files.map((file) => {
     const slug = file.replace(/\.md$/, '');
     const raw = fs.readFileSync(path.join(dir, file), 'utf-8');
-    const { data } = matter(raw);
+    const { data, content } = matter(raw);
     return {
       slug,
       title: data.title ?? slug,
@@ -55,6 +72,7 @@ export function getArticles(category: string): ArticleMeta[] {
       date: formatDate(data.date),
       category,
       parent: data.parent,
+      readingTime: calculateReadingTime(content),
     };
   });
 
@@ -84,6 +102,7 @@ export function getArticle(category: string, slug: string): Article | null {
     date: formatDate(data.date),
     category,
     parent: data.parent,
+    readingTime: calculateReadingTime(content),
     content,
   };
 }
@@ -119,4 +138,17 @@ export function getArticleSlugs(category: string): string[] {
     .readdirSync(dir)
     .filter((f) => f.endsWith('.md'))
     .map((f) => f.replace(/\.md$/, ''));
+}
+
+/**
+ * 获取相关文章（同分类，排除当前文章）
+ */
+export function getRelatedArticles(
+  category: string,
+  currentSlug: string,
+  limit = 3
+): ArticleMeta[] {
+  return getArticles(category)
+    .filter((a) => a.slug !== currentSlug)
+    .slice(0, limit);
 }
