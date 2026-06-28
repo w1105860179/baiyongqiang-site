@@ -2,27 +2,34 @@ import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { getAllArticles } from '@/lib/articles';
-import { ArrowRight } from 'lucide-react';
 
 const categoryLabels: Record<string, string> = {
-  invest: 'Investing',
+  invest: '投资',
   ai: 'AI',
-  thoughts: 'Learning',
+  thoughts: '认知',
 };
 
-export default function ArticlesPage({
+const filterOptions = [
+  { key: 'all', label: '全部' },
+  { key: 'invest', label: '投资' },
+  { key: 'ai', label: 'AI' },
+  { key: 'thoughts', label: '认知' },
+];
+
+export default async function ArticlesPage({
   searchParams,
 }: {
   searchParams: Promise<{ filter?: string }>;
 }) {
-  // 使用 Promise 进行解构
-  const { filter } = { filter: 'all' }; // 默认显示全部
-  
+  const { filter } = await searchParams;
+  const validFilter =
+    filter && filterOptions.some((opt) => opt.key === filter) ? filter : 'all';
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pt-16">
-        <ArticlesContent filter={filter} />
+        <ArticlesContent filter={validFilter} />
       </main>
       <Footer />
     </div>
@@ -31,32 +38,34 @@ export default function ArticlesPage({
 
 function ArticlesContent({ filter }: { filter: string }) {
   const articles = getAllArticles();
-  const filtered = filter === 'all'
-    ? articles
-    : articles.filter((a) => a.category === filter);
+  const filtered =
+    filter === 'all'
+      ? articles
+      : articles.filter((a) => a.category === filter);
 
   return (
     <div className="max-w-3xl mx-auto px-6 w-full py-20">
       <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">
-        Writings
+        文章
       </h1>
       <p className="text-muted-foreground mb-8">
-        AI × Investing × Lifelong Learning
+        AI × 投资 × 终身学习
       </p>
 
       {/* 分类筛选 */}
-      <div className="flex gap-2 mb-12">
-        {['all', 'invest', 'ai', 'thoughts'].map((cat) => (
-          <span
-            key={cat}
-            className={`text-xs px-3 py-1.5 rounded-full border transition-colors cursor-default ${
-              filter === cat
+      <div className="flex flex-wrap gap-2 mb-12">
+        {filterOptions.map((opt) => (
+          <Link
+            key={opt.key}
+            href={opt.key === 'all' ? '/articles' : `/articles?filter=${opt.key}`}
+            className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+              filter === opt.key
                 ? 'border-primary/30 bg-primary/5 text-foreground'
-                : 'border-border/50 text-muted-foreground'
+                : 'border-border/50 text-muted-foreground hover:text-foreground hover:border-border'
             }`}
           >
-            {cat === 'all' ? 'All' : categoryLabels[cat]}
-          </span>
+            {opt.label}
+          </Link>
         ))}
       </div>
 
