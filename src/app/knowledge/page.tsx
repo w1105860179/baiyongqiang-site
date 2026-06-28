@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { Brain, TrendingUp, BookOpen, Rocket, Route, GitBranch, ArrowRight } from 'lucide-react';
+import { Brain, TrendingUp, BookOpen, Rocket, GitBranch, ArrowRight } from 'lucide-react';
 
-// 实际文章（只展示已有内容）
 const areas = {
   ai: {
     icon: Brain,
     title: 'AI',
+    href: '/ai',
     color: 'text-purple-400',
     borderColor: 'border-purple-500/30',
     bgColor: 'bg-purple-500/5',
@@ -25,6 +25,7 @@ const areas = {
   invest: {
     icon: TrendingUp,
     title: '投资',
+    href: '/invest',
     color: 'text-amber-400',
     borderColor: 'border-amber-500/30',
     bgColor: 'bg-amber-500/5',
@@ -40,6 +41,7 @@ const areas = {
   learning: {
     icon: BookOpen,
     title: '认知',
+    href: '/thoughts',
     color: 'text-emerald-400',
     borderColor: 'border-emerald-500/30',
     bgColor: 'bg-emerald-500/5',
@@ -57,12 +59,14 @@ const areas = {
 };
 
 export default function KnowledgeMap() {
+  const totalArticles = Object.values(areas).reduce((s, a) => s + a.topics.length, 0);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 pt-16">
         <div className="max-w-5xl mx-auto px-6 w-full py-16">
-          
+
           <div className="text-center mb-12">
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">知识地图</h1>
             <p className="text-muted-foreground">AI × 投资 × 终身学习</p>
@@ -76,7 +80,7 @@ export default function KnowledgeMap() {
               <span className="text-sm font-medium text-foreground">从这里开始</span>
               <span className="text-xs text-muted-foreground/50">第一次来？建议按这个顺序阅读</span>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 { num: '1', title: 'AI', desc: '理解技术如何重塑生产力', color: 'bg-purple-500/20 text-purple-400' },
@@ -101,13 +105,13 @@ export default function KnowledgeMap() {
               const Icon = area.icon;
               return (
                 <div key={key} className={`rounded-xl border ${area.borderColor} ${area.bgColor} p-6`}>
-                  <div className="flex items-center gap-2 mb-3">
+                  <Link href={area.href} className="flex items-center gap-2 mb-3 group">
                     <Icon size={18} className={area.color} />
                     <h3 className={`text-sm font-medium ${area.color}`}>{area.title}</h3>
                     <span className="text-[10px] text-muted-foreground/50 ml-auto">{area.topics.length} 篇</span>
-                  </div>
+                  </Link>
                   <p className="text-xs text-muted-foreground/60 mb-5 leading-relaxed">{area.description}</p>
-                  
+
                   <div className="space-y-1.5">
                     {area.topics.map((topic, idx) => (
                       <Link
@@ -159,89 +163,12 @@ export default function KnowledgeMap() {
             </div>
           </div>
 
-          {/* 推荐阅读路径 */}
-          <div className="mb-12">
-            <div className="flex items-center gap-2 mb-6">
-              <Route size={16} className="text-muted-foreground/50" />
-              <span className="text-sm font-medium text-foreground">推荐阅读路径</span>
-              <span className="text-xs text-muted-foreground/50">根据不同目标选择适合你的路径。</span>
-            </div>
-
-            <div className="space-y-4">
-              {[
-                {
-                  icon: TrendingUp,
-                  color: 'text-amber-400',
-                  title: '想学投资的底层逻辑',
-                  articles: [
-                    { label: '说下投资和投机', href: '/invest/investment-vs-speculation' },
-                    { label: '那你是怎么稀释机会成本的呢？', href: '/invest/opportunity-cost' },
-                    { label: '沉没成本', href: '/invest/sunk-cost' },
-                    { label: '为什么是泡泡玛特', href: '/invest/why-popmart' },
-                    { label: '财富的源头与本质', href: '/invest/wealth-source' },
-                  ],
-                  link: '/invest',
-                },
-                {
-                  icon: BookOpen,
-                  color: 'text-emerald-400',
-                  title: '想提升个人认知',
-                  articles: [
-                    { label: '情绪稳定的本质，就四个字', href: '/thoughts/emotional-stability' },
-                    { label: '开启微行动，成就大改变', href: '/thoughts/my-new-article' },
-                    { label: '怎么能成长的最快？', href: '/thoughts/multi-dimensional-growth' },
-                    { label: '丢人就像丢钱一样', href: '/thoughts/fear-of-embarrassment' },
-                    { label: '复杂并不等于高级', href: '/thoughts/complexity-vs-simplicity' },
-                  ],
-                  link: '/thoughts',
-                },
-                {
-                  icon: Brain,
-                  color: 'text-purple-400',
-                  title: '想了解 AI 与实践',
-                  articles: [
-                    { label: '什么是AI？', href: '/ai/what-is-ai' },
-                    { label: 'AI 变革全景：从 Agent 到行业重塑的六维透视', href: '/ai/ai-transformation-panorama' },
-                    { label: 'AI 落地实战手册：从认知到行动的六步指南', href: '/ai/ai-practical-guide' },
-                    { label: '也算亲手用了AI', href: '/ai/my-first-ai-website' },
-                    { label: '硅基启蒙：AI 时代的全球重构', href: '/ai/silicon-enlightenment' },
-                  ],
-                  link: '/ai',
-                },
-              ].map((path) => {
-                const Icon = path.icon;
-                return (
-                  <div key={path.title} className="rounded-xl border border-border/50 bg-card/10 p-5">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Icon size={16} className={path.color} />
-                      <span className="text-sm font-medium text-foreground">{path.title}</span>
-                      <Link href={path.link} className={`text-[10px] ${path.color} hover:opacity-80 transition-opacity ml-auto flex items-center gap-1`}>
-                        全部 <ArrowRight size={10} />
-                      </Link>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-1.5">
-                      {path.articles.map((a, idx) => (
-                        <Link
-                          key={a.href}
-                          href={a.href}
-                          className="text-xs text-muted-foreground hover:text-foreground bg-card/40 px-3 py-1 rounded-full transition-colors"
-                        >
-                          {a.label}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
           <div className="text-center pt-8 border-t border-border/30">
             <p className="text-muted-foreground/40 font-serif italic text-sm mb-2">
               &ldquo;技术、投资与学习，会产生巨大的复利效应。&rdquo;
             </p>
             <p className="text-xs text-muted-foreground/30">— BaiYongQiang</p>
-            <p className="text-xs text-muted-foreground/20 mt-3">共 {Object.values(areas).reduce((s, a) => s + a.topics.length, 0)} 篇文章，持续更新中。</p>
+            <p className="text-xs text-muted-foreground/20 mt-3">共 {totalArticles} 篇文章，持续更新中。</p>
           </div>
         </div>
       </main>
