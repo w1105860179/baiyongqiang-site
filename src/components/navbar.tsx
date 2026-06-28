@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: '首页' },
+  { href: '/articles', label: '文章' },
   { href: '/knowledge', label: '知识地图' },
   { href: '/tools', label: '工具' },
   { href: '/about', label: '关于我' },
