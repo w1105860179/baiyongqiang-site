@@ -24,7 +24,7 @@ const areas = {
   },
   invest: {
     icon: TrendingUp,
-    title: 'Investing',
+    title: '投资',
     color: 'text-amber-400',
     borderColor: 'border-amber-500/30',
     bgColor: 'bg-amber-500/5',
@@ -39,7 +39,7 @@ const areas = {
   },
   learning: {
     icon: BookOpen,
-    title: 'Learning',
+    title: '认知',
     color: 'text-emerald-400',
     borderColor: 'border-emerald-500/30',
     bgColor: 'bg-emerald-500/5',
@@ -64,8 +64,8 @@ export default function KnowledgeMap() {
         <div className="max-w-5xl mx-auto px-6 w-full py-16">
           
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Knowledge Map</h1>
-            <p className="text-muted-foreground">AI × Investing × Lifelong Learning</p>
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">知识地图</h1>
+            <p className="text-muted-foreground">AI × 投资 × 终身学习</p>
             <p className="text-sm text-muted-foreground/50 mt-2">用系统思维理解世界，构建长期复利的认知资产。</p>
           </div>
 
@@ -73,15 +73,15 @@ export default function KnowledgeMap() {
           <div className="rounded-xl border border-border/50 bg-card/10 p-6 mb-12">
             <div className="flex items-center gap-3 mb-6">
               <Rocket size={18} className="text-primary" />
-              <span className="text-sm font-medium text-foreground">Start Here</span>
+              <span className="text-sm font-medium text-foreground">从这里开始</span>
               <span className="text-xs text-muted-foreground/50">第一次来？建议按这个顺序阅读</span>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 { num: '1', title: 'AI', desc: '理解技术如何重塑生产力', color: 'bg-purple-500/20 text-purple-400' },
-                { num: '2', title: 'Investing', desc: '理解价值如何被创造与分配', color: 'bg-amber-500/20 text-amber-400' },
-                { num: '3', title: 'Lifelong Learning', desc: '提升认知，实现人生的复利增长', color: 'bg-emerald-500/20 text-emerald-400' },
+                { num: '2', title: '投资', desc: '理解价值如何被创造与分配', color: 'bg-amber-500/20 text-amber-400' },
+                { num: '3', title: '终身学习', desc: '提升认知，实现人生的复利增长', color: 'bg-emerald-500/20 text-emerald-400' },
               ].map((item, i) => (
                 <div key={item.title} className="flex items-start gap-3">
                   <span className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${item.color}`}>{item.num}</span>
@@ -146,12 +146,12 @@ export default function KnowledgeMap() {
               <ArrowRight size={14} className="text-muted-foreground/20 rotate-90 md:rotate-0" />
               <div className="w-20 h-20 rounded-full border-2 border-amber-500/30 bg-amber-500/5 flex flex-col items-center justify-center">
                 <TrendingUp size={16} className="text-amber-400 mb-0.5" />
-                <span className="text-[10px] text-amber-400">Investing</span>
+                <span className="text-[10px] text-amber-400">投资</span>
               </div>
               <ArrowRight size={14} className="text-muted-foreground/20 rotate-90 md:rotate-0" />
               <div className="w-20 h-20 rounded-full border-2 border-emerald-500/30 bg-emerald-500/5 flex flex-col items-center justify-center">
                 <BookOpen size={16} className="text-emerald-400 mb-0.5" />
-                <span className="text-[10px] text-emerald-400">Learning</span>
+                <span className="text-[10px] text-emerald-400">认知</span>
               </div>
             </div>
             <div className="mt-5 text-center">
