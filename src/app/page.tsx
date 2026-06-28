@@ -11,9 +11,9 @@ const categoryLabels: Record<string, string> = {
 };
 
 const features = [
-  { icon: Brain, label: 'AI 探索', desc: '理解技术如何重塑工作与生活', href: '/knowledge', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
-  { icon: TrendingUp, label: '投资思考', desc: '长期视角看待价值与复利', href: '/knowledge', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
-  { icon: BookOpen, label: '终身学习', desc: '认知升级与个人成长', href: '/knowledge', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
+  { icon: Brain, label: 'AI 探索', desc: '理解技术如何重塑工作与生活', href: '/ai', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
+  { icon: TrendingUp, label: '投资思考', desc: '长期视角看待价值与复利', href: '/invest', color: 'text-amber-400', bg: 'bg-amber-500/10', border: 'border-amber-500/20' },
+  { icon: BookOpen, label: '终身学习', desc: '认知升级与个人成长', href: '/thoughts', color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20' },
   { icon: Wrench, label: '实用工具', desc: '定投回测 · 复利计算', href: '/tools', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/20' },
 ];
 
@@ -28,25 +28,26 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-6 w-full">
 
           {/* Hero */}
-          <section className="py-24 md:py-32 text-center">
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-              <span className="bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent">
-                探索 · 学习 · 创造
-              </span>
+          <section className="py-16 md:py-24 text-center">
+            <p className="text-sm text-muted-foreground/70 mb-4 tracking-wide">
+              BaiYongQiang · 零售数字化从业者
+            </p>
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-5 text-foreground">
+              探索 · 学习 · 创造
             </h1>
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
               用系统思维理解世界，构建长期复利的认知资产。
             </p>
-            <div className="mt-8 flex items-center justify-center gap-4">
+            <div className="mt-8 flex items-center justify-center gap-3">
               <Link
-                href="/knowledge"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors"
+                href="/articles"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-sm font-medium hover:bg-white/90 transition-colors"
               >
-                开始阅读 <ArrowRight size={14} />
+                阅读文章 <ArrowRight size={14} />
               </Link>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-border/50 text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border/50 text-sm text-muted-foreground hover:text-foreground hover:border-border transition-colors"
               >
                 关于我
               </Link>
@@ -54,7 +55,7 @@ export default function Home() {
           </section>
 
           {/* 功能卡片 */}
-          <section className="py-12">
+          <section className="py-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {features.map((item) => {
                 const Icon = item.icon;
@@ -62,10 +63,10 @@ export default function Home() {
                   <Link
                     key={item.label}
                     href={item.href}
-                    className={`group rounded-2xl border ${item.border} ${item.bg} p-6 hover:scale-[1.02] transition-all duration-300`}
+                    className={`group rounded-2xl border ${item.border} ${item.bg} p-5 hover:scale-[1.02] transition-all duration-300`}
                   >
-                    <div className={`w-10 h-10 rounded-xl ${item.bg} border ${item.border} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                      <Icon size={20} className={item.color} />
+                    <div className={`w-9 h-9 rounded-lg ${item.bg} border ${item.border} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+                      <Icon size={18} className={item.color} />
                     </div>
                     <h3 className="text-sm font-medium text-foreground mb-1">{item.label}</h3>
                     <p className="text-xs text-muted-foreground/60 leading-relaxed">{item.desc}</p>
@@ -80,7 +81,7 @@ export default function Home() {
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-lg font-bold text-foreground">精选文章</h2>
               <Link
-                href="/knowledge"
+                href="/articles"
                 className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 查看全部 <ArrowRight size={14} />
