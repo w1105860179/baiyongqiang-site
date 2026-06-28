@@ -15,19 +15,19 @@ export function Footer() {
             href="/articles"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            Writings
+            文章
           </Link>
           <Link
             href="/tools"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            Tools
+            工具
           </Link>
           <Link
             href="/about"
             className="text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
-            About
+            关于我
           </Link>
         </div>
       </div>
