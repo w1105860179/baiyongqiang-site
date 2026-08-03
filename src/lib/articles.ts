@@ -9,6 +9,7 @@ export interface ArticleMeta {
   title: string;
   description: string;
   date: string;
+  dateISO: string;
   category: string;
   parent?: string;
   readingTime: string;
@@ -35,21 +36,31 @@ function calculateReadingTime(text: string): string {
 }
 
 /**
- * 格式化日期为"2026年"格式
+ * 解析日期，返回中文展示串与可排序的 ISO 串。
+ * 支持 "2026-06-22"、"2026/6/3"、"2026-06" 等；缺失或非法时排到最后。
  */
-function formatDate(dateValue: unknown): string {
-  if (!dateValue) return '';
-  // 如果是 Date 对象，提取年份
+function parseDate(dateValue: unknown): { display: string; iso: string } {
+  let d: Date | null = null;
   if (dateValue instanceof Date) {
-    return `${dateValue.getFullYear()}年`;
+    d = dateValue;
+  } else if (typeof dateValue === 'string') {
+    const s = dateValue.trim();
+    const full = s.match(/(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+    if (full) {
+      d = new Date(Number(full[1]), Number(full[2]) - 1, Number(full[3]));
+    } else {
+      const ym = s.match(/(\d{4})[-/](\d{1,2})/);
+      if (ym) d = new Date(Number(ym[1]), Number(ym[2]) - 1, 1);
+    }
   }
-  // 如果是字符串，尝试提取年份
-  const str = String(dateValue);
-  const yearMatch = str.match(/\d{4}/);
-  if (yearMatch) {
-    return `${yearMatch[0]}年`;
-  }
-  return str;
+  if (!d || isNaN(d.getTime())) return { display: '', iso: '0000-00-00' };
+  const y = d.getFullYear();
+  const m = d.getMonth() + 1;
+  const day = d.getDate();
+  return {
+    display: `${y}年${m}月${day}日`,
+    iso: `${y}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
+  };
 }
 
 /**
@@ -65,23 +76,21 @@ export function getArticles(category: string): ArticleMeta[] {
     const slug = file.replace(/\.md$/, '');
     const raw = fs.readFileSync(path.join(dir, file), 'utf-8');
     const { data, content } = matter(raw);
+    const { display, iso } = parseDate(data.date);
     return {
       slug,
       title: data.title ?? slug,
       description: data.description ?? '',
-      date: formatDate(data.date),
+      date: display,
+      dateISO: iso,
       category,
       parent: data.parent,
       readingTime: calculateReadingTime(content),
     };
   });
 
-  // 按日期倒序
-  articles.sort((a, b) => {
-    const dateA = String(a.date || '');
-    const dateB = String(b.date || '');
-    return dateB.localeCompare(dateA);
-  });
+  // 按完整日期倒序（新→旧）
+  articles.sort((a, b) => b.dateISO.localeCompare(a.dateISO));
   return articles;
 }
 
@@ -99,7 +108,8 @@ export function getArticle(category: string, slug: string): Article | null {
     slug,
     title: data.title ?? slug,
     description: data.description ?? '',
-    date: formatDate(data.date),
+    date: parseDate(data.date).display,
+    dateISO: parseDate(data.date).iso,
     category,
     parent: data.parent,
     readingTime: calculateReadingTime(content),
@@ -123,7 +133,7 @@ export function getAllArticles(): ArticleMeta[] {
     all.push(...getArticles(category));
   }
 
-  all.sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+  all.sort((a, b) => b.dateISO.localeCompare(a.dateISO));
   return all;
 }
 
