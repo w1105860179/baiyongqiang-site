@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAEB · 本地教学链</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --line:#e3e8ef; --text:#1f2937;
+    --muted:#7b8794; --blue:#2563eb; --green:#059669; --red:#dc2626;
+    --gold:#d97706;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.5}
+  .wrap{max-width:1140px;margin:0 auto;padding:20px}
+  header{text-align:center;padding:24px 0 8px}
+  header h1{margin:0;font-size:26px;letter-spacing:1px}
+  header .sub{color:var(--muted);font-size:13px;margin-top:6px}
+  #banner{display:none;background:#fef3c7;color:#92400e;padding:10px 14px;
+    border-radius:8px;margin:12px 0;font-size:13px}
+  .steps{background:#eef2ff;color:#3730a3;border-radius:10px;padding:12px 16px;
+    font-size:13px;margin:14px 0}
+  .steps b{color:#312e81}
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:12px;text-align:center}
+  .stat .v{font-size:20px;font-weight:700}
+  .stat .k{font-size:12px;color:var(--muted);margin-top:4px}
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:16px;margin-bottom:16px}
+  .card h2{margin:0 0 12px;font-size:16px;display:flex;align-items:center;gap:8px}
+  .card h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--blue)}
+  button{cursor:pointer;border:none;border-radius:8px;padding:8px 12px;font-size:13px;
+    background:var(--blue);color:#fff;transition:.15s}
+  button:hover{opacity:.9}
+  button.ghost{background:#eef2f7;color:var(--text)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  input{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+    font-size:13px;margin:4px 0;font-family:monospace}
+  label{font-size:12px;color:var(--muted);display:block;margin-top:8px}
+  .wallet{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;
+    cursor:pointer;transition:.15s}
+  .wallet:hover{border-color:var(--blue)}
+  .wallet.selected{border-color:var(--blue);background:#f0f6ff}
+  .wallet .bal{font-size:18px;font-weight:700;color:var(--gold);margin:4px 0}
+  .addr-full{font-size:10px;color:var(--muted);word-break:break-all;font-family:monospace}
+  .wactions{margin-top:8px;display:flex;gap:6px}
+  .wactions button{padding:5px 8px;font-size:11px}
+  .tag{font-size:10px;background:var(--green);color:#fff;padding:1px 6px;border-radius:6px}
+  .tag.blue{background:var(--blue)}
+  .tx{font-size:12px;font-family:monospace;padding:4px 0;border-bottom:1px dashed var(--line)}
+  .tx.coin{color:var(--gold)}
+  .block{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px;
+    background:#fbfcfe}
+  .bhead{font-weight:700;font-size:14px}
+  .hash{font-size:11px;color:var(--blue);font-family:monospace;word-break:break-all;
+    margin:6px 0;background:#f1f5f9;padding:6px;border-radius:6px}
+  .txs{padding-left:4px}
+  .muted{color:var(--muted);font-size:12px}
+  .row{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}
+  #miningStatus{font-size:12px;color:var(--muted);margin-top:8px;min-height:16px}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>HAEB</h1>
+    <div class="sub">本地教学区块链 — 挖矿 / 钱包 / 交易 全跑得通，但不是真钱、不上交易所</div>
+  </header>
+
+  <div id="banner">⚠️ 当前浏览器不支持本地加密（crypto.subtle）。请用 <b>Chrome / Edge / Firefox</b> 直接打开本文件；或在文件夹里运行 <code>python -m http.server</code> 后访问 localhost。</div>
+
+  <div class="steps">
+    <b>快速开始：</b>
+    ① 点「创建钱包」建两个钱包（A、B） →
+    ② 用 A「设为矿工」→ 点「挖矿」拿 50 HAEB 奖励 →
+    ③ 选中 A，给 B 转一笔账（进待确认池）→
+    ④ 再「挖矿」一次，交易上链，B 收到钱。
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="v" id="statHeight">0</div><div class="k">区块高度</div></div>
+    <div class="stat"><div class="v" id="statDifficulty">3</div><div class="k">挖矿难度</div></div>
+    <div class="stat"><div class="v" id="statReward">50</div><div class="k">区块奖励(HAEB)</div></div>
+    <div class="stat"><div class="v" id="statSupply">0</div><div class="k">总供应量</div></div>
+    <div class="stat"><div class="v" id="statPending">0</div><div class="k">待确认交易</div></div>
+  </div>
+
+  <div class="grid">
+    <!-- 左：钱包 + 操作 -->
+    <div>
+      <div class="card">
+        <h2><span class="dot"></span>钱包</h2>
+        <button onclick="createWallet()">＋ 创建钱包</button>
+        <div id="wallets" style="margin-top:12px"></div>
+      </div>
+
+      <div class="card">
+        <h2><span class="dot" style="background:var(--gold)"></span>发起交易（转账）</h2>
+        <label>从（转出源钱包，已选中高亮）</label>
+        <div id="fromAddr" class="muted" style="font-family:monospace;word-break:break-all">—</div>
+        <label>收款地址</label>
+        <input id="txTo" placeholder="粘贴 130 位十六进制地址">
+        <label>金额 (HAEB)</label>
+        <input id="txAmount" type="number" min="0" step="0.01" placeholder="例如 10">
+        <button style="margin-top:10px;width:100%" onclick="sendTx()">发送（进入待确认池）</button>
+      </div>
+
+      <div class="card">
+        <h2><span class="dot" style="background:var(--green)"></span>挖矿</h2>
+        <label>矿工钱包（拿区块奖励）</label>
+        <div id="minerAddr" class="muted" style="font-family:monospace;word-break:break-all">—</div>
+        <label>难度（前导 0 的个数，越大越慢）</label>
+        <input id="diffInput" type="number" min="1" max="5" value="3" onchange="setDifficulty(this.value)">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:6px">
+          <input type="checkbox" id="autoDiff" onchange="setAuto(this.checked)"> 自动难度（仿 BTC 重定靶，自动稳定出块速度）
+        </label>
+        <button id="mineBtn" style="margin-top:10px;width:100%;background:var(--green)" onclick="mine()">⛏ 挖一个区块</button>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:8px">
+          <input type="checkbox" id="autoMine" onchange="setAutoMine(this.checked)"> 自动挖矿（开启后连续出块，再点一次停止）
+        </label>
+        <div id="miningStatus"></div>
+        <div id="lastBlockTime" class="muted" style="margin-top:6px"></div>
+      </div>
+    </div>
+
+    <!-- 右：待确认 + 链 -->
+    <div>
+      <div class="card">
+        <h2><span class="dot" style="background:var(--red)"></span>待确认交易池</h2>
+        <div id="pending"></div>
+        <div class="toolbar">
+          <button class="ghost" onclick="exportState()">导出备份(JSON)</button>
+          <label style="margin:0">导入：<input id="importFile" type="file" style="width:auto;display:inline" onchange="importState(this.files[0])"></label>
+          <button class="ghost" onclick="resetAll()">清空重置</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="dot"></span>区块链（最新在上）</h2>
+        <div id="chain"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    HAEB 是教学演示链：单节点、无 P2P 网络、PoW 难度可调、签名用真实 ECDSA(P-256)。<br>
+    想升级成多节点 / 真难度 / 上测试网，跟 Seafish 说一声。
+  </footer>
+</div>
+
+<script>
+/* ===================== 配置（改这里就能改名/改参数） ===================== */
+const CONFIG = { name:'HAEB', cn:'', ticker:'HAEB', blockReward:50, maxDifficulty:5 };
+
+/* ===================== 状态 ===================== */
+let difficulty = 3;
+let chain = [];
+let pendingTxs = [];
+let wallets = [];
+let selectedAddr = null;  // 转账的“从”钱包
+let minerAddr = null;     // 拿区块奖励的钱包
+let autoDifficulty = true;   // 自动难度（仿 BTC 每区块重定靶）
+let lastMineDuration = 0;    // 上次出块耗时(ms)
+let autoMining = false;      // 自动连续挖矿
+
+/* ===================== 工具函数 ===================== */
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const enc = str => new TextEncoder().encode(str);
+function buf2hex(buf){ return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join(''); }
+function hex2buf(hex){ const a = new Uint8Array(hex.length/2); for(let i=0;i<a.length;i++) a[i]=parseInt(hex.substr(i*2,2),16); return a.buffer; }
+// 区块哈希用浏览器自带的 SHA-256（离线可用，file:// 也支持）
+async function sha256(str){ return buf2hex(await crypto.subtle.digest('SHA-256', enc(str))); }
+async function hashBlock(b){ return sha256(b.index + b.prevHash + b.timestamp + b.nonce + b.txsHash); }
+function shortAddr(a){ return a ? a.slice(0,10)+'…'+a.slice(-6) : '—'; }
+
+/* ===================== 钱包（真实 ECDSA 密钥对） ===================== */
+async function createWallet(){
+  const kp = await crypto.subtle.generateKey({name:'ECDSA', namedCurve:'P-256'}, true, ['sign','verify']);
+  const privJwk = await crypto.subtle.exportKey('jwk', kp.privateKey);     // 私钥，备份用
+  const pubRaw  = new Uint8Array(await crypto.subtle.exportKey('raw', kp.publicKey));
+  const address = buf2hex(pubRaw.buffer);   // 地址 = 公钥（非压缩 65 字节 = 130 位十六进制）
+  wallets.push({ address, privJwk, balance:0 });
+  if(!selectedAddr) selectedAddr = address;
+  if(!minerAddr) minerAddr = address;
+  await save(); render();
+}
+// 签名：用私钥对交易载荷签名（教学用，真实 ECDSA）
+async function signTx(tx, privJwk){
+  const key = await crypto.subtle.importKey('jwk', privJwk, {name:'ECDSA', namedCurve:'P-256'}, false, ['sign']);
+  const payload = tx.from+'|'+tx.to+'|'+tx.amount+'|'+tx.timestamp;
+  return buf2hex(await crypto.subtle.sign({name:'ECDSA', hash:'SHA-256'}, key, enc(payload)));
+}
+// 验签：用“地址(=公钥)”验证签名是否有效
+async function verifyTx(tx){
+  if(tx.type === 'coinbase') return true;
+  try{
+    const key = await crypto.subtle.importKey('raw', hex2buf(tx.from), {name:'ECDSA', namedCurve:'P-256'}, false, ['verify']);
+    const payload = tx.from+'|'+tx.to+'|'+tx.amount+'|'+tx.timestamp;
+    return await crypto.subtle.verify({name:'ECDSA', hash:'SHA-256'}, key, hex2buf(tx.signature), enc(payload));
+  }catch(e){ return false; }
+}
+
+/* ===================== 余额（从链上重算，保证一致） ===================== */
+function recomputeBalances(){
+  const bal = {};
+  const add = (a,x) => { bal[a] = (bal[a]||0) + x; };
+  for(const blk of chain){
+    for(const tx of blk.transactions){
+      if(tx.type === 'coinbase') add(tx.to, tx.amount);
+      else { add(tx.from, -tx.amount); add(tx.to, tx.amount); }
+    }
+  }
+  for(const w of wallets) w.balance = bal[w.address] || 0;
+}
+
+/* ===================== 交易 ===================== */
+async function sendTx(){
+  if(!selectedAddr){ alert('请先创建一个钱包并选中它'); return; }
+  const to = $('txTo').value.trim();
+  const amount = parseFloat($('txAmount').value);
+  if(!/^[0-9a-f]{130}$|^[0-9a-f]{66}$/.test(to)){ alert('收款地址格式不对（应从别的钱包“复制地址”拿到，130 位十六进制）'); return; }
+  if(!(amount > 0)){ alert('金额必须大于 0'); return; }
+  const w = wallets.find(x => x.address === selectedAddr);
+  const pendingOut = pendingTxs.filter(t => t.from === selectedAddr).reduce((s,t)=>s+t.amount,0);
+  if(w.balance - pendingOut < amount){ alert('余额不足（已扣除待确认转出）'); return; }
+  const tx = { from:selectedAddr, to, amount, timestamp:Date.now(), type:'normal' };
+  tx.signature = await signTx(tx, w.privJwk);
+  pendingTxs.push(tx);
+  $('txTo').value=''; $('txAmount').value='';
+  await save(); render();
+}
+
+/* ===================== 挖矿（PoW） ===================== */
+async function mine(){
+  if(!minerAddr){ alert('请先选一个矿工钱包（默认第一个）'); return; }
+  $('mineBtn').disabled = true;
+  $('miningStatus').textContent = '挖矿中…';
+  const txs = pendingTxs.slice();
+  for(const t of txs){
+    if(!(await verifyTx(t))){ alert('有一笔待确认交易签名无效，已丢弃'); pendingTxs=[]; await save(); render(); $('mineBtn').disabled = autoMining; return; }
+  }
+  const txsHash = await sha256(JSON.stringify(txs));
+  const prev = chain[chain.length-1];
+  const index = prev.index + 1;
+  const timestamp = Date.now();
+  const target = '0'.repeat(difficulty);
+  const t0 = performance.now();
+  let nonce = 0, hash = '';
+  while(true){
+    hash = await hashBlock({index, prevHash:prev.hash, timestamp, nonce, txsHash});
+    if(hash.startsWith(target)) break;
+    nonce++;
+    if(nonce % 1000 === 0){ $('miningStatus').textContent = '挖矿中… 已尝试 '+nonce+' 次'; await sleep(0); }
+  }
+  const coinbase = { from:'0', to:minerAddr, amount:CONFIG.blockReward, type:'coinbase', timestamp };
+  chain.push({ index, prevHash:prev.hash, timestamp, nonce, txsHash, hash, transactions:[coinbase, ...txs] });
+  pendingTxs = [];
+  lastMineDuration = performance.now() - t0;
+  // 仿 BTC 难度重定靶：本块挖太久就降难度，太快就升难度，把出块速度拉稳
+  if(autoDifficulty){
+    const tgt = 4000;
+    if(lastMineDuration > tgt*1.5) difficulty = Math.max(1, difficulty-1);
+    else if(lastMineDuration < tgt*0.6) difficulty = Math.min(CONFIG.maxDifficulty, difficulty+1);
+  }
+  recomputeBalances();
+  await save(); render();
+  $('miningStatus').textContent = (autoMining?'🤖 ':'')+'✅ 挖出第 '+index+' 区块！nonce='+nonce+'，耗时 '+(lastMineDuration/1000).toFixed(2)+' 秒，哈希 '+hash.slice(0,16)+'…';
+  $('mineBtn').disabled = autoMining;
+}
+
+/* ===================== 创世区块 ===================== */
+async function initGenesis(){
+  if(chain.length) return;
+  const ts = Date.now();
+  const block = { index:0, prevHash:'0'.repeat(64), timestamp:ts, nonce:0, txsHash:await sha256('genesis'), hash:'', transactions:[] };
+  block.hash = await hashBlock(block);
+  chain.push(block);
+}
+
+/* ===================== 存盘 / 读取 ===================== */
+async function save(){ localStorage.setItem('abysscoin_v1', JSON.stringify({chain, pendingTxs, wallets, difficulty, minerAddr, selectedAddr, autoDifficulty})); }
+async function load(){
+  const raw = localStorage.getItem('abysscoin_v1');
+  if(raw){ const s = JSON.parse(raw); chain=s.chain||[]; pendingTxs=s.pendingTxs||[]; wallets=s.wallets||[]; difficulty=s.difficulty||3; minerAddr=s.minerAddr||null; selectedAddr=s.selectedAddr||null; autoDifficulty = (s.autoDifficulty !== undefined) ? s.autoDifficulty : true; }
+  if(chain.length === 0) await initGenesis();
+  recomputeBalances();
+}
+function exportState(){
+  const blob = new Blob([JSON.stringify({chain, pendingTxs, wallets, difficulty, minerAddr, selectedAddr})], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'abysscoin-backup.json'; a.click();
+}
+async function importState(file){
+  if(!file) return;
+  const s = JSON.parse(await file.text());
+  chain=s.chain; pendingTxs=s.pendingTxs; wallets=s.wallets; difficulty=s.difficulty||3; minerAddr=s.minerAddr; selectedAddr=s.selectedAddr;
+  recomputeBalances(); await save(); render();
+}
+async function resetAll(){
+  if(!confirm('确定清空所有区块链、钱包和交易？此操作不可恢复（除非你有备份文件）。')) return;
+  chain=[]; pendingTxs=[]; wallets=[]; selectedAddr=null; minerAddr=null;
+  await initGenesis(); await save(); render();
+}
+
+/* ===================== 交互 ===================== */
+function selectWallet(a){ selectedAddr = a; render(); }
+function setMiner(a){ minerAddr = a; render(); }
+function copyText(t){ navigator.clipboard.writeText(t).then(()=>alert('地址已复制')); }
+function setDifficulty(v){ if(autoDifficulty) return; difficulty = Math.max(1, Math.min(CONFIG.maxDifficulty, parseInt(v)||3)); $('diffInput').value = difficulty; save(); render(); }
+function setAuto(v){ autoDifficulty = v; $('diffInput').disabled = v; save(); render(); }
+function setAutoMine(v){
+  if(v && !minerAddr){ alert('请先创建并选择矿工钱包（默认第一个）再开启自动挖矿'); autoMining = false; render(); return; }
+  autoMining = v;
+  if(v) autoMineLoop();   // 开启后开始连续出块
+  render();
+}
+async function autoMineLoop(){
+  while(autoMining){
+    await mine();
+    if(!autoMining) break;   // 取消勾选后，挖完当前块即停
+    await sleep(600);        // 块与块之间留点间隔，方便看链在长
+  }
+}
+
+/* ===================== 渲染 ===================== */
+function render(){
+  recomputeBalances();
+  const totalSupply = chain.reduce((s,b)=> s + b.transactions.filter(t=>t.type==='coinbase').reduce((x,t)=>x+t.amount,0), 0);
+  $('statHeight').textContent   = chain.length - 1;
+  $('statDifficulty').textContent = difficulty;
+  $('statReward').textContent   = CONFIG.blockReward;
+  $('statSupply').textContent   = totalSupply;
+  $('statPending').textContent  = pendingTxs.length;
+  $('fromAddr').textContent  = shortAddr(selectedAddr);
+  $('minerAddr').textContent = shortAddr(minerAddr);
+  $('diffInput').value = difficulty;
+  $('diffInput').disabled = autoDifficulty;
+  $('autoDiff').checked = autoDifficulty;
+  $('autoMine').checked = autoMining;
+  $('mineBtn').disabled = autoMining;
+  $('lastBlockTime').textContent = lastMineDuration ? ('上次出块耗时 '+(lastMineDuration/1000).toFixed(2)+' 秒 · 当前难度 '+difficulty) : '';
+
+  let wh = '';
+  for(const w of wallets){
+    const isSel = w.address === selectedAddr;
+    const tags = (w.address === minerAddr ? '<span class="tag">矿工</span>' : '') + (isSel ? '<span class="tag blue">转出源</span>' : '');
+    wh += `<div class="wallet ${isSel?'selected':''}" onclick="selectWallet('${w.address}')">
+      <div><b>${shortAddr(w.address)}</b> ${tags}</div>
+      <div class="bal">${w.balance} ${CONFIG.ticker}</div>
+      <div class="addr-full" title="${w.address}">${w.address}</div>
+      <div class="wactions">
+        <button class="ghost" onclick="event.stopPropagation();setMiner('${w.address}')">设为矿工</button>
+        <button class="ghost" onclick="event.stopPropagation();copyText('${w.address}')">复制地址</button>
+      </div></div>`;
+  }
+  if(!wallets.length) wh = '<p class="muted">还没有钱包，点上方「创建钱包」。</p>';
+  $('wallets').innerHTML = wh;
+
+  let ph = '';
+  for(const t of pendingTxs) ph += `<div class="tx">${shortAddr(t.from)} → ${shortAddr(t.to)} : ${t.amount} ${CONFIG.ticker} <span class="muted">(待确认)</span></div>`;
+  if(!pendingTxs.length) ph = '<p class="muted">暂无待确认交易。转账后会在这里，挖矿后上链。</p>';
+  $('pending').innerHTML = ph;
+
+  let ch = '';
+  for(let i = chain.length-1; i >= 0; i--){
+    const b = chain[i];
+    let txs = '';
+    for(const t of b.transactions){
+      if(t.type === 'coinbase') txs += `<div class="tx coin">⛏ 挖矿奖励 → ${shortAddr(t.to)} : +${t.amount}</div>`;
+      else txs += `<div class="tx">${shortAddr(t.from)} → ${shortAddr(t.to)} : ${t.amount}</div>`;
+    }
+    if(!b.transactions.length) txs = '<div class="muted">（创世区块，无交易）</div>';
+    ch += `<div class="block">
+      <div class="bhead">#${b.index} <span class="muted">nonce ${b.nonce}</span></div>
+      <div class="hash">${b.hash}</div>
+      <div class="txs">${txs}</div></div>`;
+  }
+  $('chain').innerHTML = ch;
+}
+
+/* ===================== 启动 ===================== */
+window.addEventListener('load', async () => {
+  if(!window.crypto || !crypto.subtle) $('banner').style.display = 'block';
+  await load();
+  $('diffInput').value = difficulty;
+  render();
+});
+</script>
+</body>
+</html>
